@@ -1,0 +1,58 @@
+# Following are the user stories for the application:
+0. user logs into the dashboard website
+1. A user lands on a page with default graphs showcasing important metrics across schools in a state (with a dropdown to choose state)
+3. User searches for his school in a auto complete search bar and gets the school level visuals on a new page with details of his school.
+   (He can bookmark this page and use it as his school dashboard with live data from syncthing)
+4. School level dashboard page will have details of the school, three important metrics of relevance for the headmaster
+
+# Following are the components of the system
+1. clix_dashboard_backend:
+   - A flask application with postgres database
+   - A login for admin to see latest data on synced schools
+   - A rest api for different endpoints of clix_dashboard_ui
+2. clix_dashboard_ui:
+   - A website implementing the user stories mentioned in the previous paragraph
+   - A react app with data visualisation using D3
+   - This will be calling the rest api endpoints of the flask application
+3. clix_dashboard_backend_AF:
+   - A task scheduler and monitor for data processing based on Apache Airflow
+   - Periodic copying of data from syncthing
+   - Processing latest raw syncthing data to generate tables for schools
+   - Updating school tables in flask-api db(postgres) to reflect the latest syncthing data
+   - It has its own webui to monitor and schedule data processing pipelines
+
+# Following are the API endpoint requirements of backend(clix_dashboard_backend):
+1. These requirements depend on ui user stories
+2. /login - a login page for admin and schools teachers
+3. /user - we have two users - admin and school teacher - each will have different views. 
+   A school teacher recognised by a school code will have a unique page corresponding to his school (with data coming from this school).
+   An admin view will be same as the view of our public website with an additional menu item of syncthing data status of schools.
+   Specifically, it will be a page with search bar for schools (where user can search for school and get page related to school in new tab) and 
+   state level visuals of basic school metrics with an ability to choose between states
+4. /syncstatus - this will be a web ui of syncthing progress for each school, a simple visualisation of data on syncthing status of schools
+
+5. Tables: 
+   - School_Metric1: attendence of schools over time, in terms of number of unique user logins over time
+   - School_Metics2: Number of modules attempted (by all students together) over time, broken down by subject
+   - Schools_Metrics3: Amount of time spent on tools (by all students together) over time, brokendown by subject (or tool name)
+   - #State_Metrics1: attendence of state over time, in terms of number of unique user logins over time
+   - #State_Meritrcs2: Number of modules attempted (by all students together) over time in a state, brokendown by subject
+   - #State_Metrics3: Amount of time spent on tools (by all students together) over time, broken down by subject (or tool name)
+   - Syncstatus: School level information about lastupdated time of syncthing data for a given school
+   - User: Admin and all school teachers data, who will be logging in to access school level info. Information about their last login, times of login and 
+     number of times logged in need to stored.
+
+6. API endpoints of interest:
+   - GET /school<school_server_code>
+   - GET /state<state_code>
+   - GET /syncstatus
+
+7. Concrete artifacts in terms of pages, tabs, menu etc: 
+   a. Login page is a standard login without registration!
+   b. /user<school_server_code> page will be school page for the user(with corresponding school_server_code)
+   c. /admin page will be admin page with the default state metrics populated
+   d. /base.html will have on the menu bar : CLIx Dashboard(=/user or /admin, if logged in or /login if anonymous), 
+      SyncStatus(=/syncstatus, only for admin user), Logout (on the right)
+ 
+
+   

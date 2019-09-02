@@ -1,0 +1,40 @@
+# docker-compose build && docker-compose up -d
+# If "docker-compose logs ckan" shows DB not ready, run "docker-compose restart ckan" a few times.
+version: '3'
+
+services:
+  
+  clix_dashboard_postgres:
+    container_name: clix_dashboard_postgres
+    image: postgres:10.5 
+    ports:
+      - '5434:5432'
+    volumes:
+      - ../../pg_data:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d      
+    environment:
+      - POSTGRES_DB=clix_dashboard_db
+      - POSTGRES_USER=admin_clixdata
+      - POSTGRES_PASSWORD=clixdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5    
+
+  clix_dashboard_backend:
+    container_name: clix_dashboard_backend
+    restart: always
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../../app:/home/clix_dashboard_backend/app
+      - ../../config.py:/home/clix_dashboard_backend/config.py  
+    depends_on:
+      - clix_dashboard_postgres
+      
+
+
