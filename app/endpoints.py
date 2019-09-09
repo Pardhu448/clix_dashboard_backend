@@ -2,13 +2,12 @@ from flask import Flask, jsonify, abort, make_response, g
 from flask_restful import Api, Resource, reqparse, fields, marshal
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app
-from app.models.school.schema import Metric1, Metric2
+from app.models.school.schema import Metric1, Metric2, Metric3, Metric4, Metric5, Metric6
 from app.models.user.schema import User
 from flask import Blueprint, request, make_response, jsonify
 from app import bcrypt
 from app.middleware import login_required
-
-
+from sqlalchemy import desc, asc
 api = Api(app)
 
 tasks = [
@@ -157,28 +156,54 @@ class GetDataAPI(Resource):
         try:
             # fetch the user data
             school_user_code = User.query.filter_by(id = g.user).first().username
+
             school_server_code = school_user_code[-7:] + '-' + school_user_code[0:-7]
-            school_table = Metric1.query.filter_by(
+
+            school_attendance_table = Metric1.query.filter_by(
                 school_server_code=school_server_code
-            ).all()
+            ).order_by(asc(Metric1.date)).distinct(Metric1.date).all()
+
+            school_serverup_table = Metric4.query.filter_by(
+                school_server_code=school_server_code
+            ).order_by(asc(Metric4.date)).distinct(Metric4.date).all()
+
+            school_tools_table = Metric3.query.filter_by(
+                school_server_code=school_server_code
+            ).order_by(asc(Metric3.date)).distinct(Metric3.date).all()
+
+            school_modules_table = Metric2.query.filter_by(
+                school_server_code=school_server_code
+            ).order_by(asc(Metric2.date)).distinct(Metric2.date).all()
+
+            school_tools_attendance = Metric5.query.filter_by(
+                school_server_code=school_server_code
+            ).order_by(asc(Metric5.date)).distinct(Metric5.date).all()
+
+            school_modules_attendance = Metric6.query.filter_by(
+                school_server_code=school_server_code
+            ).order_by(asc(Metric6.date)).distinct(Metric6.date).all()
 
             def serialize_data(record):
-                return {
-                    "id": record.id,
-                    "school_server_code": record.school_server_code,
-                    "date": record.date.strftime("%Y%m%d"),
-                    "attendance_tools": record.attendance_tools,
-                    "attendance_modules": record.attendance_modules,
-                    "state": record.state,
-                    "district": record.district
-                }
+                record_dict = dict((col, getattr(record, col)) for col in record.__table__.columns.keys())
+                record_dict['date'] = record_dict['date'].strftime("%Y%m%d")
+                return record_dict
 
-            school_table_json = [serialize_data(each) for each in school_table]
+            school_attendance_json = [serialize_data(each) for each in school_attendance_table]
+            school_serverup_json = [serialize_data(each) for each in school_serverup_table]
+            school_tools_json = [serialize_data(each) for each in school_tools_table]
+            school_modules_json = [serialize_data(each) for each in school_modules_table]
+            school_tools_attendance_json = [serialize_data(each) for each in school_tools_attendance]
+            school_modules_attendance_json = [serialize_data(each) for each in school_modules_attendance]
 
             responseObject = {
                 'status': 'success',
                 'message': 'Successfully Fetched data Table.',
-                'data': school_table_json,
+                'data_attendance': school_attendance_json,
+                'data_serverup': school_serverup_json,
+                #'data_tools': school_tools_json,
+                #'data_modules': school_modules_json,
+                'data_tools_attendance': school_tools_attendance_json,
+                'data_modules_attendance': school_modules_attendance_json,
                 'username': school_server_code
                 }
             return make_response(jsonify(responseObject), 200)

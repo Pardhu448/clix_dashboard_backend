@@ -23,6 +23,7 @@ class Metric1(db.Model):
     attendance_modules = db.Column(db.Integer, unique=False, nullable=True)
     state = db.Column(db.String(32), unique=False, nullable=False)
     district = db.Column(db.String(32), unique=False, nullable=False)
+    school_name = db.Column(db.String(64), unique=False, nullable=True)
     #posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
@@ -121,3 +122,81 @@ class Metric4(db.Model):
 
     def __repr__(self):
         return '<Metric4 of : {}>'.format(self.school_server_code)
+
+
+class Metric5(db.Model):
+    '''
+    This model corresponds to Metric5 of a school.
+    It gives the number of students engaged with different tools in a day.
+    following are the attributes of this table:
+    1. id
+    2. school_server_code
+    3. date
+    4. <All tool names>
+    6. state
+    7. district
+    '''
+    __tablename__ = 'metric5'
+    id = db.Column(db.Integer, primary_key=True)
+    school_server_code = db.Column(db.String(64), index=True, unique=False, nullable=False)
+    date = db.Column(db.DateTime, unique=False, nullable=False)
+
+    tool_ice = db.Column(db.Integer, unique=False, nullable=True)
+    tool_factorisation = db.Column(db.Integer, unique=False, nullable=True)
+    tool_coins_puzzle = db.Column(db.Integer, unique=False, nullable=True)
+    tool_rationpatterns = db.Column(db.Integer, unique=False, nullable=True)
+    tool_food_sharing_tool = db.Column(db.Integer, unique=False, nullable=True)
+    tool_ages_puzzle = db.Column(db.Integer, unique=False, nullable=True)
+    tool_policesquad = db.Column(db.Integer, unique=False, nullable=True)
+    tool_astroamer_element_hunt_activity = db.Column(db.Integer, unique=False, nullable=True)
+    tool_astroamer_moon_track = db.Column(db.Integer, unique=False, nullable=True)
+    tool_astroamer_planet_trek_activity = db.Column(db.Integer, unique=False, nullable=True)
+
+    state = db.Column(db.String(32), unique=False, nullable=False)
+    district = db.Column(db.String(32),unique=False, nullable=False )
+    #posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Metric5 of : {}>'.format(self.school_server_code)
+
+class Metric6(db.Model):
+    '''
+    This model corresponds to Metric5 of a school.
+    It gives the number of students engaged with different modules in a day.
+    following are the attributes of this table:
+    1. id
+    2. school_server_code
+    3. date
+    4. <All tool names>
+    6. state
+    7. district
+    '''
+    __tablename__ = 'metric6'
+    id = db.Column(db.Integer, primary_key=True)
+    school_server_code = db.Column(db.String(64), index=True, unique=False, nullable=False)
+    date = db.Column(db.DateTime, unique=False, nullable=False)
+
+    module_English_Beginner = db.Column(db.Integer, unique=False, nullable=True)
+    module_English_Elementary = db.Column(db.Integer, unique=False, nullable=True)
+    module_i2C = db.Column(db.Integer, unique=False, nullable=True)
+    module_Geometric_Reasoning_Part_I = db.Column(db.Integer, unique=False, nullable=True)
+    module_Geometric_Reasoning_Part_II = db.Column(db.Integer, unique=False, nullable=True)
+    module_Linear_Equations = db.Column(db.Integer, unique=False, nullable=True)
+    module_Proportional_Reasoning = db.Column(db.Integer, unique=False, nullable=True)
+    module_Atomic_Structure = db.Column(db.Integer, unique=False, nullable=True)
+    module_Sound = db.Column(db.Integer, unique=False, nullable=True)
+    module_Understanding_Motion = db.Column(db.Integer, unique=False, nullable=True)
+    module_Basic_Astronomy = db.Column(db.Integer, unique=False, nullable=True)
+    module_Health_and_Disease = db.Column(db.Integer, unique=False, nullable=True)
+    module_Ecosystem = db.Column(db.Integer, unique=False, nullable=True)
+    module_Reflecting_on_Values = db.Column(db.Integer, unique=False, nullable=True)
+    module_Post_CLIx_Survey = db.Column(db.Integer, unique=False, nullable=True)
+    module_Pre_CLIx_Survey = db.Column(db.Integer, unique=False, nullable=True)
+
+
+    state = db.Column(db.String(32), unique=False, nullable=False)
+    district = db.Column(db.String(32),unique=False, nullable=False )
+    #posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Metric6 of : {}>'.format(self.school_server_code)
