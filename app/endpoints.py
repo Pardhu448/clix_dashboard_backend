@@ -161,27 +161,27 @@ class GetDataAPI(Resource):
 
             school_attendance_table = Metric1.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric1.date)).distinct(Metric1.date).all()
+            ).order_by(desc(Metric1.date)).distinct(Metric1.date).all()
 
             school_serverup_table = Metric4.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric4.date)).distinct(Metric4.date).all()
+            ).order_by(desc(Metric4.date)).distinct(Metric4.date).all()
 
             school_tools_table = Metric3.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric3.date)).distinct(Metric3.date).all()
+            ).order_by(desc(Metric3.date)).distinct(Metric3.date).all()
 
             school_modules_table = Metric2.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric2.date)).distinct(Metric2.date).all()
+            ).order_by(desc(Metric2.date)).distinct(Metric2.date).all()
 
             school_tools_attendance = Metric5.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric5.date)).distinct(Metric5.date).all()
+            ).order_by(desc(Metric5.date)).distinct(Metric5.date).all()
 
             school_modules_attendance = Metric6.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(asc(Metric6.date)).distinct(Metric6.date).all()
+            ).order_by(desc(Metric6.date)).distinct(Metric6.date).all()
 
             def serialize_data(record):
                 record_dict = dict((col, getattr(record, col)) for col in record.__table__.columns.keys())

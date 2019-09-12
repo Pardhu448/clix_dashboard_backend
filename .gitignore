@@ -3,3 +3,4 @@ pg_data
 .idea
 .flaskenv
 migrations
+clix_env
