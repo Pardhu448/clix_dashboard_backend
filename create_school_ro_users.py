@@ -19,6 +19,11 @@ import time
 Engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_size=POOL_SIZE, max_overflow=0)
 connec = Engine.connect()
 
+# Code to delete rows specific to a state 
+#'''
+#select * from metric1 where substring(split_part(school_server_code, '-', 2) from 1 for 2) = 'tg';
+#'''
+
 def get_all_schools():
     '''
     fetch all unique schools in db
