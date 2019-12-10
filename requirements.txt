@@ -1,4 +1,4 @@
-alembici==0.9.6
+alembic==0.9.6
 Babel==2.5.1
 blinker==1.4
 certifi==2017.7.27.1
