@@ -5,10 +5,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-            'postgres+psycopg2://admin_clixdata:clixdata@172.17.0.1:<Available POSTGRES PORT>/clix_dashboard_db'
+            'postgres+psycopg2://admin_clixdata:clixdata@172.17.0.1:<available port>/clix_dashboard_db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     POSTS_PER_PAGE = 20
     BCRYPT_LOG_ROUNDS = 13
+    UPLOAD_FOLDER = basedir + '/SchoolImages'
 
 class BaseConfig:
     """Base configuration"""

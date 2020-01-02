@@ -1,3 +1,5 @@
+from app import app
+
 DB_TYPE = 'postgresql'
 DB_DRIVER = 'psycopg2'
 DB_USER = 'admin_clixdata'

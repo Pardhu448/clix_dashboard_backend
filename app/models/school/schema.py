@@ -200,3 +200,46 @@ class Metric6(db.Model):
 
     def __repr__(self):
         return '<Metric6 of : {}>'.format(self.school_server_code)
+
+class SchoolInfo(db.Model):
+    '''
+    This model corresponds to Metric5 of a school.
+    It gives the number of students engaged with different modules in a day.
+    following are the attributes of this table:
+    1. id
+    2. school_server_code
+    3. schoolDescription
+    5. dateUpdated
+    '''
+    __tablename__ = 'schoolinfo'
+    id = db.Column(db.Integer, primary_key=True)
+    school_server_code = db.Column(db.String(64), index=True, unique=False, nullable=False)
+    dateUpdated = db.Column(db.DateTime, unique=False, nullable=True)
+    schoolDescription = db.Column(db.Text, index=False, unique=False, nullable=True)
+
+    def __repr__(self):
+        return '<SchoolInfo of : {}>'.format(self.school_server_code)
+
+
+class SchoolImage(db.Model):
+    '''
+    This model corresponds to Metric5 of a school.
+    It gives the number of students engaged with different modules in a day.
+    following are the attributes of this table:
+    1. id
+    2. school_server_code
+    3. schoolImageName
+    5. dateUpdated
+    '''
+
+    __tablename__ = 'schoolimage'
+    id = db.Column(db.Integer, primary_key=True)
+    school_server_code = db.Column(db.String(64), index=True, unique=False, nullable=False)
+    dateUpdated = db.Column(db.DateTime, unique=False, nullable=True)
+    schoolImageName = db.Column(db.Text, index=False, unique=False, nullable=True)
+
+    def __repr__(self):
+        return '<SchoolImage of : {}>'.format(self.school_server_code)
+
+
+
