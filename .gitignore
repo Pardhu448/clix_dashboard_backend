@@ -4,3 +4,4 @@ pg_data
 .flaskenv
 migrations
 clix_env
+SchoolImages
