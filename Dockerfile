@@ -24,7 +24,17 @@ RUN apk --no-cache add libpq
 
 COPY app app
 COPY migrations migrations
+COPY SchoolImages SchoolImages
 COPY clix_dashboard_backend.py config.py entrypoint.sh ./
+
+ARG DOCKER_UID 
+
+RUN apk --no-cache add shadow && \ 
+    usermod -u ${DOCKER_UID} clix_dashboard_backend \
+    && groupmod -g ${DOCKER_UID} clix_dashboard_backend \
+    && echo "Set clix_dashboard_backend's uid to ${DOCKER_UID}"
+
+
 RUN chmod a+x entrypoint.sh
 
 ENV FLASK_APP clix_dashboard_backend.py
