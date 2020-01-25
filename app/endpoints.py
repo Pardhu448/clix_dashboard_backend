@@ -18,7 +18,8 @@ api = Api(app)
 
 upload_folder = app.config['UPLOAD_FOLDER']
 
-
+'''
+# Sample flask endpoints using resource module
 tasks = [
     {
         'id': 1,
@@ -68,7 +69,6 @@ class TaskListAPI(Resource):
         tasks.append(task)
         return {'task': marshal(task, task_fields)}, 201
 
-
 class SchoolAPI(Resource):
     decorators = [login_required]
 
@@ -104,7 +104,7 @@ class SchoolAPI(Resource):
             abort(404)
         tasks.remove(task[0])
         return {'result': True}
-
+'''
 
 class AuthenticateAPI(Resource):
     """

@@ -1,3 +1,5 @@
+# Not used in the code base - please ignore this code
+# this code is to upload information about synced schools manually into Syncstatus DB
 import pandas
 import sys
 import os

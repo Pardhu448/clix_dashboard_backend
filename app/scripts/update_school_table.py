@@ -1,3 +1,5 @@
+# Not used in this codebase - please ignore it
+# This was part of implementation to do scheduling of data processing using celery and/or redis
 # To get latest school data tables for visualisation.
 # This script looks for any changes in syncthing_data_live folder and if there is any addition/modification in
 # data, it identifies a particular school where updation happened and then processes this schools data and uploads new table into
