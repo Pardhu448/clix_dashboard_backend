@@ -87,3 +87,4 @@ def user(username):
 
     return render_template('index.html', title='SyncStatus', username=user, schools=schoolstatus.items,
                            next_url=next_url, prev_url=prev_url)
+'''
