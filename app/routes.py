@@ -5,9 +5,6 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm
 from app.models.user.schema import User
-from app.models.school.schema import Metric1, Metric2
-
-#from app.models import user, syncstatus
 
 @app.before_request
 def before_request():
@@ -61,7 +58,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
+'''
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -75,7 +72,6 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
 
 @app.route('/user/<username>')
 @login_required
