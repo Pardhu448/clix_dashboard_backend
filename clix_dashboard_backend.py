@@ -14,18 +14,23 @@ def make_shell_context():
 #    return dataupload.upload_schooldata(schooldata, db = db)
 
 @app.cli.command()
-@click.option('--username', help='To create admin user for clix_dashboard_backend, done during initial setup')
-def create_admin(username):
-    print('Creating Admin User for CLIx_dashboard_backend\n')
-    print('Enter Password for UserName: {}'.format(username))
-    passwd = input()
-    print('Enter emailID:')
-    email = input()
-    adminuser = User(username=username, password=passwd)
-    #adminuser.set_password(password=passwd)
+@click.option('--username', help='Username to create admin user for clix_dashboard_backend (mostly used during initial setup) {Mandatory}')
+@click.option('--password', help='Password to create admin user for clix_dashboard_backend (mostly used during initial setup)')
+@click.option('--email', help='Email to create admin user for clix_dashboard_backend (mostly used during initial setup)')
+def create_admin(username, password = "", email = ""):
+    print('Creating Admin User(', username, ') for CLIx_dashboard_backend\n')
+
+    if not password:
+        print('Enter Password for UserName( {}'.format(username), "):")
+        password = input()
+
+    if not email:
+        print('Enter emailID:')
+        email = input()
+
+    adminuser = User(username=username, password=password)
+    #adminuser.set_password(password=password)
     db.session.add(adminuser)
     db.session.commit()
     print('Congratulations, you are now a admin user for CLIx Daashboard Backend!')
     return None
-
-
