@@ -1,14 +1,11 @@
 from app import app
-from config import Config
-
-# TO get all the relevant credentials for postgresql backend
 
 DB_TYPE = 'postgresql'
 DB_DRIVER = 'psycopg2'
-DB_USER = Config.POSTGRES_USER
-DB_PASS = Config.POSTGRES_PASSWORD
-DB_HOST = '172.17.0.1'
-DB_PORT = Config.POSTGRES_PORT
+DB_USER = 'admin_clixdata'
+DB_PASS = 'clixdata'
+DB_HOST = 'clix_dashboard_postgres'
+DB_PORT = '5432'
 DB_NAME = 'clix_dashboard_db'
 POOL_SIZE = 50
 SQLALCHEMY_DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER,
@@ -24,7 +21,7 @@ import time
 Engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_size=POOL_SIZE, max_overflow=0)
 connec = Engine.connect()
 
-# Code to delete rows specific to a state 
+# Code to delete rows specific to a state
 #'''
 #select * from metric1 where substring(split_part(school_server_code, '-', 2) from 1 for 2) = 'tg';
 #'''
@@ -46,9 +43,9 @@ def create_ro_school_admins(school_admins):
     '''
 
     try:
-        create_role = """ CREATE ROLE readaccess; 
-        GRANT USAGE ON SCHEMA public TO readaccess; 
-        GRANT SELECT ON ALL TABLES IN SCHEMA public TO readaccess; 
+        create_role = """ CREATE ROLE readaccess;
+        GRANT USAGE ON SCHEMA public TO readaccess;
+        GRANT SELECT ON ALL TABLES IN SCHEMA public TO readaccess;
         ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readaccess;
         """
 
@@ -61,8 +58,8 @@ def create_ro_school_admins(school_admins):
 
         for each in school_admins:
             user = each
-            assign_users = """ CREATE USER {0} WITH PASSWORD 'clixdata'; 
-            GRANT readaccess TO {0}; 
+            assign_users = """ CREATE USER {0} WITH PASSWORD 'clixdata';
+            GRANT readaccess TO {0};
             """.format(user)
 
             list_users = """SELECT u.usename AS "User Name" FROM pg_catalog.pg_user u;
@@ -98,4 +95,3 @@ def create_school_users(schools):
 if __name__ == '__main__':
     create_ro_school_admins(get_all_schools())
     create_school_users(get_all_schools())
-
