@@ -1,11 +1,14 @@
 from app import app
+from config import Config
+
+# TO get all the relevant credentials for postgresql backend
 
 DB_TYPE = 'postgresql'
 DB_DRIVER = 'psycopg2'
-DB_USER = 'admin_clixdata'
-DB_PASS = 'clixdata'
+DB_USER = Config.POSTGRES_USER
+DB_PASS = Config.POSTGRES_PASSWORD
 DB_HOST = '172.17.0.1'
-DB_PORT = '5433'
+DB_PORT = Config.POSTGRES_PORT
 DB_NAME = 'clix_dashboard_db'
 POOL_SIZE = 50
 SQLALCHEMY_DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER,
