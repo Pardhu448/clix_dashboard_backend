@@ -179,7 +179,6 @@ class GetDataAPI(Resource):
             school_serverup_table = Metric4.query.filter_by(
                 school_server_code=school_server_code
             ).order_by(desc(Metric4.date)).distinct(Metric4.date, Metric4.school_server_code).all()
-
             school_tools_table = Metric3.query.filter_by(
                 school_server_code=school_server_code
             ).order_by(desc(Metric3.date)).distinct(Metric3.date).all()
