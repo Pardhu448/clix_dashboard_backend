@@ -19,6 +19,13 @@ api = Api(app)
 upload_folder = app.config['UPLOAD_FOLDER']
 
 '''
+@app.after_request
+def add_no_cache_header(response):
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
+
 # Sample flask endpoints using resource module
 tasks = [
     {
@@ -178,7 +185,7 @@ class GetDataAPI(Resource):
             # Distinct by date and school_server_code as we have only one log per date per school
             school_serverup_table = Metric4.query.filter_by(
                 school_server_code=school_server_code
-            ).order_by(desc(Metric4.date)).distinct(Metric4.date, Metric4.school_server_code).first()
+            ).order_by(desc(Metric4.date)).first()
 
             school_tools_table = Metric3.query.filter_by(
                 school_server_code=school_server_code
@@ -197,12 +204,15 @@ class GetDataAPI(Resource):
             ).order_by(desc(Metric6.date)).distinct(Metric6.date).all()
 
             def serialize_data(record):
-                record_dict = dict((col, getattr(record, col)) for col in record.__table__.columns.keys())
-                record_dict['date'] = record_dict['date'].strftime("%Y%m%d")
-                return record_dict
+                if record is not None:
+                    record_dict = dict((col, getattr(record, col)) for col in record.__table__.columns.keys())
+                    record_dict['date'] = record_dict['date'].strftime("%Y%m%d")
+                    return record_dict
+                else:
+                    return None
 
             school_attendance_json = [serialize_data(each) for each in school_attendance_table]
-            school_serverup_json = [serialize_data(each) for each in school_serverup_table]
+            school_serverup_json = [serialize_data(school_serverup_table)]
             school_tools_json = [serialize_data(each) for each in school_tools_table]
             school_modules_json = [serialize_data(each) for each in school_modules_table]
             school_tools_attendance_json = [serialize_data(each) for each in school_tools_attendance]
@@ -339,7 +349,10 @@ class SchoolImageAPI(Resource):
                 #    'username': school_server_code,
                 #    'schoolImage': url_for(schoolImagePath)
                 #}
-                return send_from_directory(upload_folder, school_image_name, mimetype=mime_type)
+                imageResponse = make_response(send_from_directory(upload_folder, school_image_name, mimetype=mime_type))
+                imageResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                imageResponse.headers['Pragma'] = 'no-cache'
+                return imageResponse
                 #return make_response(jsonify(responseObject), 200)
 
             else:
