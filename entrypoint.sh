@@ -45,4 +45,4 @@ fi
 echo "Starting gunicorn service on port 5000"
 exec gunicorn ${ssl_parameters} -b 0.0.0.0:5000 --access-logfile - --error-logfile - clix_dashboard_backend:app
 
-# exec "$@"
+exec "$@"
