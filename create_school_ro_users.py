@@ -51,7 +51,6 @@ def create_ro_school_admins(school_admins):
         GRANT SELECT ON ALL TABLES IN SCHEMA public TO readaccess; 
         ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readaccess;
         """
-
         check_for_role = connec.execute(""" SELECT 1 FROM pg_roles WHERE rolname='readaccess'
         """).fetchone()
 
@@ -67,35 +66,38 @@ def create_ro_school_admins(school_admins):
 
             list_users = """SELECT u.usename AS "User Name" FROM pg_catalog.pg_user u;
             """
+
             users = [each[0] for each in connec.execute(list_users).fetchall()]
             if user not in users:
                 connec.execute(assign_users)
-
+                create_school_user(user) 
+            else:
+                print("School {} already exists in backend DB.".format(user))
     except Exception as e:
         print(e)
         raise(Exception)
 
-def create_school_users(schools):
+def create_school_user(school):
     '''
     To create user roles for schools to access school related visuals
     :param schools:
     :return:
     '''
-    for each in schools:
-        passwd = 'clixdata'
-        email = 'clixdashboard@tiss.edu'
-        adminuser = User(username=each, password=passwd)
-        # adminuser.set_password(password=passwd)
-        try:
-            db.session.add(adminuser)
-            db.session.commit()
-            print('Added user {0} to db.'.format(each))
-        except Exception as e:
-            print(e)
-        time.sleep(2)
+    #for each in schools:
+    passwd = 'clixdata'
+    email = 'clixdashboard@tiss.edu'
+    adminuser = User(username=school, password=passwd)
+    # adminuser.set_password(password=passwd)
+    try:
+      db.session.add(adminuser)
+      db.session.commit()
+      print('Added user {0} to db.'.format(school))
+    except Exception as e:
+      print(e)
+      time.sleep(2)
     return None
 
 if __name__ == '__main__':
     create_ro_school_admins(get_all_schools())
-    create_school_users(get_all_schools())
+    #create_school_users(get_all_schools())
 
